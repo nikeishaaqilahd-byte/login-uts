@@ -1,0 +1,296 @@
+/* ==========================================================
+   MICE 25 - Halaman Sign In (Split-Screen)
+   Rasio kontras mengacu pada WCAG 2.2 (AA):
+   teks >= 4.5:1, komponen UI >= 3:1
+   ========================================================== */
+
+:root {
+  --ink: #1a1307;          /* teks utama & tombol */
+  --muted: #55503f;        /* teks sekunder */
+  --gold: #7a4f00;         /* tautan / aksen */
+  --line: #857d6a;         /* border input */
+  --surface: #ffffff;
+  --surface-alt: #f6f2e8;
+  --focus: #1a5fd0;        /* cincin fokus */
+  --radius: 12px;
+  --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------- Reset & Box Model ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--surface);
+}
+
+img { display: block; max-width: 100%; }
+
+/* ---------- Skip link ---------- */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  z-index: 10;
+  padding: .625rem 1rem;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+.skip-link:focus { top: 0; }
+
+/* ---------- Layout (mobile-first: bertumpuk vertikal) ---------- */
+.auth {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Kolom kiri / banner atas */
+.auth__art {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  background: var(--ink);
+}
+.auth__art-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+.auth__art-caption {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  margin: 0;
+  padding: .5rem .875rem;
+  width: fit-content;
+  max-width: calc(100% - 2rem);
+  font-size: .875rem;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(26, 19, 7, .82);
+  border-radius: 999px;
+}
+
+/* Kolom kanan / formulir */
+.auth__panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem 3rem;
+}
+.auth__box {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* ---------- Logo & judul ---------- */
+.auth__logo {
+  width: 220px;
+  aspect-ratio: 2.2 / 1;
+  margin: 0 auto 1rem;
+  overflow: hidden;           /* memangkas ruang putih bawaan file logo */
+}
+.auth__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 44%;
+}
+
+.auth__title {
+  margin: 0 0 1.5rem;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  text-align: center;
+}
+
+/* ---------- Tombol ---------- */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  width: 100%;
+  min-height: 52px;
+  padding: .75rem 1.25rem;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+.btn--sso {
+  color: var(--ink);
+  background: var(--surface-alt);
+  border: 2px solid var(--surface-alt);
+}
+.btn--sso:hover { border-color: var(--line); }
+
+.btn--primary {
+  margin-top: 1.5rem;
+  color: #fff;
+  background: var(--ink);
+  border: 2px solid var(--ink);
+}
+.btn--primary:hover { background: #3a2a0c; border-color: #3a2a0c; }
+
+/* ---------- Divider "or" ---------- */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  color: var(--muted);
+}
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* ---------- Form ---------- */
+.field + .field { margin-top: 1.125rem; }
+
+.field__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.field__label {
+  display: block;
+  margin-bottom: .375rem;
+  font-size: .9375rem;
+  font-weight: 700;
+}
+
+.field__control { position: relative; }
+
+.field__input {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  padding: .75rem 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.field__input::placeholder { color: #6b6554; opacity: 1; }
+.field__input--icon { padding-right: 3.25rem; }
+
+.field__toggle {
+  position: absolute;
+  top: 50%;
+  right: .5rem;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+.field__toggle:hover { color: var(--ink); }
+
+/* ---------- Checkbox ---------- */
+.check {
+  display: flex;
+  align-items: center;
+  gap: .625rem;
+  margin-top: 1.125rem;
+}
+.check__input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--ink);
+  cursor: pointer;
+}
+.check__label {
+  font-size: .9375rem;
+  cursor: pointer;
+}
+
+/* ---------- Tautan & catatan ---------- */
+.link {
+  color: var(--gold);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.link:hover { color: var(--ink); }
+
+.note {
+  margin: 1.5rem 0 0;
+  font-size: .875rem;
+  text-align: center;
+  color: var(--muted);
+}
+.note + .note { margin-top: .75rem; }
+
+/* ---------- Fokus keyboard (WCAG 2.4.7 / 2.4.11) ---------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+.field__input:focus-visible { border-color: var(--focus); }
+
+/* ---------- Tablet (>= 768px): banner lebih tinggi ---------- */
+@media (min-width: 768px) {
+  .auth__art { height: 320px; }
+  .auth__art-img { object-position: center 28%; }
+  .auth__panel { padding: 3rem 2rem 4rem; }
+}
+
+/* ---------- Desktop (>= 1024px): split-screen dua kolom ---------- */
+@media (min-width: 1024px) {
+  .auth { flex-direction: row; }
+
+  .auth__art {
+    flex: 0 0 46%;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+  .auth__art-img { object-position: center; }
+  .auth__art-caption {
+    left: 2rem;
+    bottom: 2rem;
+    font-size: 1rem;
+    padding: .625rem 1.125rem;
+  }
+
+  .auth__panel { flex: 1; padding: 3rem; }
+  .auth__logo { width: 260px; }
+}
+
+/* ---------- Preferensi pengguna ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
